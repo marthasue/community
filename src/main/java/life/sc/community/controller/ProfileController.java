@@ -1,3 +1,5 @@
+package life.sc.community.controller;
+
 import life.sc.community.dto.PaginationDTO;
 import life.sc.community.mapper.UserMapper;
 import life.sc.community.model.User;
@@ -30,7 +32,7 @@ public class ProfileController {
             return "redirect:/";
         }
 
-
+        //System.out.println(action);
         if ("questions".equals(action)) {
             model.addAttribute("section", "questions");
             model.addAttribute("sectionName", "我的提问");
