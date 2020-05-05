@@ -20,3 +20,4 @@ public interface UserMapper {
     @Update("update user set name = #{name},gmt_modified = #{gmtModified},avatar_url = #{avatarUrl},token = #{token} where id = #{id}")
     void update(User dbUser);
 }
+

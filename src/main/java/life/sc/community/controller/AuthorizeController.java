@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +42,6 @@ public class AuthorizeController {
     private UserService userService;
 
     @GetMapping("/callback")
-    //@ResponseBody
     public String callback(@RequestParam(name="code") String code,
                            @RequestParam(name="state") String state,
                            HttpServletRequest request,
@@ -66,6 +65,7 @@ public class AuthorizeController {
             user.setAvatarUrl(githubUser.getAvatarUrl());
             userService.createOrUpdate(user);
             //登录成功，写cookie和session
+            System.out.println("requestUrl:"+request.getRequestURL().toString());
             response.addCookie(new Cookie("token",token));
             //request.getSession().setAttribute("githubUser", githubUser);
             return "redirect:/";

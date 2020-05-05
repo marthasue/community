@@ -57,6 +57,7 @@ public class QuestionService {
     }
 
     public PaginationDTO list(Integer userId, Integer page, Integer size) {
+        //page默认是1，size默认是5
         PaginationDTO paginationDTO = new PaginationDTO();
 
         Integer totalPage;
@@ -81,6 +82,7 @@ public class QuestionService {
         //size*(page-1)
         Integer offset = size * (page - 1);
         if(offset<0) offset = 0;
+        //limit #{offset},#{size} 跳过offset条数据，选择size条数据
         List<Question> questions = questionMapper.listByUserId(userId, offset, size);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 

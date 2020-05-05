@@ -12,9 +12,9 @@ public class PaginationDTO {
     private boolean showFirstPage;
     private boolean showNext;
     private boolean showEndPage;
-    private Integer page;
+    private Integer page;//当前页
     private List<Integer> pages = new ArrayList<>();
-    private Integer totalPage;
+    private Integer totalPage;//总页数
 
     public void setPagination(Integer totalPage, Integer page) {
         this.totalPage = totalPage;

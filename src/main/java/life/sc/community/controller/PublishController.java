@@ -43,7 +43,7 @@ public class PublishController {
             HttpServletRequest request,
             Model model
     ){
-        System.out.println(title);
+        //System.out.println(title);
         model.addAttribute("title", title);
         model.addAttribute("description", description);
         model.addAttribute("tag", tag);
@@ -72,7 +72,7 @@ public class PublishController {
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmtModified(question.getGmtCreate());
         questionMapper.create(question);
-        System.out.println(question.getTitle());
+        //System.out.println(question.getTitle());
         return "redirect:/";
     }
 }
