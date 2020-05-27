@@ -6,15 +6,23 @@ function post() {
         url: "/comment",
         contentType: 'application/json',
         data: JSON.stringify({
-            "parentId": questionId,
+            "questionId": questionId,
             "content": content,
-            "type": 1
+            //"type": 1
         }),
         success: function (response) {
             if (response.code == 200) {
                 $("#comment_section").hide();
             } else {
-                alert(response.message);
+                if (response.code == 2002) {
+                    var isAccepted = confirm(response.message);
+                    if (isAccepted) {
+                        window.open("https://github.com/login/oauth/authorize?client_id=4dfd528117a70c16d1ce&redirect_uri=http://localhost:8887/callback&scope=user&state=1");
+                        window.localStorage.setItem("closable", true);
+                    }
+                } else {
+                    alert(response.message);
+                }
             }
             console.log(response);
         },

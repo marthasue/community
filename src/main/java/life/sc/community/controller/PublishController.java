@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.Long;
+import java.util.Date;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
@@ -69,7 +70,8 @@ public class PublishController {
         question.setDescription(description);
         question.setTag(tag);
         question.setCreator(user.getId());
-        question.setGmtCreate(System.currentTimeMillis());
+        //question.setGmtCreate(System.currentTimeMillis());
+        question.setGmtCreate(new Date());
         question.setGmtModified(question.getGmtCreate());
         questionMapper.create(question);
         //System.out.println(question.getTitle());

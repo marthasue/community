@@ -1,5 +1,6 @@
 package life.sc.community.controller;
 
+import life.sc.community.dto.CommentDTO;
 import life.sc.community.dto.QuestionDTO;
 import life.sc.community.mapper.QuestionMapper;
 import life.sc.community.model.Comment;
@@ -23,13 +24,15 @@ public class QuestionController {
     private CommentService commentService;
 
     @GetMapping("/question/{id}")
-    public String question(@PathVariable(name = "id")  Integer id,
+    public String question(@PathVariable(name = "id")  Long id,
                            Model model){
+        questionService.increViewCount(id);
         QuestionDTO questionDTO = questionService.getById(id);
 
-        List<Comment> commentList = commentService.listByQuestionId(id);
-        questionDTO.setCommentCount(commentList.size());
+        List<CommentDTO> commentList = commentService.listByQuestionId(id);
+
         model.addAttribute("question",questionDTO);
+        //System.out.println(questionDTO.getId());
         model.addAttribute("comments",commentList);
         return "question";
     }

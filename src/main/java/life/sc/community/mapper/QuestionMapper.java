@@ -2,10 +2,7 @@ package life.sc.community.mapper;
 
 import life.sc.community.dto.QuestionDTO;
 import life.sc.community.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -27,5 +24,14 @@ public interface QuestionMapper {
     Integer countByUserId(@Param("userId") Integer userId);
 
     @Select("select * from question where id = #{id}")
-    Question getById(@Param("id") Integer id);
+    Question getById(@Param("id") Long id);
+
+    @Select("select * from question where date_sub(CURDATE(), INTERVAL 7 DAY)<= DATE(gmt_create)")
+    List<Question> findLastWeekQuestion();
+
+    @Update("update question set comment_count = comment_count+1 where id = #{id}")
+    void increCommentCountById(@Param("id") Long id);
+
+    @Update("update question set view_count = view_count+1 where id = #{id}")
+    void increViewCount(@Param("id") Long questionId);
 }

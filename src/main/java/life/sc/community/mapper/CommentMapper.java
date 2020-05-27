@@ -1,5 +1,6 @@
 package life.sc.community.mapper;
 
+import life.sc.community.dto.CommentDTO;
 import life.sc.community.model.Comment;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
@@ -13,6 +14,7 @@ public interface CommentMapper {
     void insert(Comment comment);
 
     @Select("select * from comment where question_id = #{questionId}")
-    List<Comment> getCommentsByQuestionId(Integer questionId);
-    //List<Comment> getCommentsByQuestionId(@Param("questionId") Integer questionId);
+    List<CommentDTO> getCommentsByQuestionId(@Param("questionId") Long questionId);
+    //List<Comment> getCommentsByQuestionId(Integer questionId);
+
 }

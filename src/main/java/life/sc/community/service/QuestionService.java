@@ -1,16 +1,23 @@
 package life.sc.community.service;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import life.sc.community.dto.PaginationDTO;
 import life.sc.community.dto.QuestionDTO;
 import life.sc.community.mapper.QuestionMapper;
 import life.sc.community.mapper.UserMapper;
 import life.sc.community.model.Question;
 import life.sc.community.model.User;
+import life.sc.community.util.RedisUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -98,7 +105,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public QuestionDTO getById(Integer id) {
+    public QuestionDTO getById(Long id) {
         Question question = questionMapper.getById(id);
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
@@ -106,4 +113,15 @@ public class QuestionService {
         questionDTO.setUser(user);
         return questionDTO;
     }
+
+    public void increCommentCountById(Long questionId) {
+        Question question = questionMapper.getById(questionId);
+        //questionMapper.updateById(questionId,question.getCommentCount()+1);
+        questionMapper.increCommentCountById(questionId);
+    }
+
+    public void increViewCount(Long questionId){
+        questionMapper.increViewCount(questionId);
+    }
+
 }
