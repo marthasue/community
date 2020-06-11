@@ -2,18 +2,15 @@ package life.sc.community.controller;
 
 import life.sc.community.dto.CommentDTO;
 import life.sc.community.dto.ResultDTO;
-import life.sc.community.mapper.CommentMapper;
 import life.sc.community.model.Comment;
 import life.sc.community.model.User;
 import life.sc.community.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @Controller
 public class CommentController {
@@ -34,7 +31,9 @@ public class CommentController {
         comment.setQuestionId(commentDTO.getQuestionId());
         comment.setContent(commentDTO.getContent());
         comment.setGmtCreate(System.currentTimeMillis());
+        comment.setLikeCount(0L);
         commentService.insert(comment);
         return ResultDTO.okOf();
     }
+
 }

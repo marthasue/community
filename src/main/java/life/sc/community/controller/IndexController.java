@@ -6,6 +6,7 @@ import life.sc.community.mapper.QuestionMapper;
 import life.sc.community.mapper.UserMapper;
 import life.sc.community.model.Question;
 import life.sc.community.model.User;
+import life.sc.community.service.HotQuestionService;
 import life.sc.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,9 @@ public class IndexController {
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private HotQuestionService hotQuestionService;
+
     @GetMapping("/")
     public String index(HttpServletRequest request,
                         Model model,
@@ -37,6 +41,9 @@ public class IndexController {
                         @RequestParam(name = "size",defaultValue = "5") Integer size){
         PaginationDTO pagination = questionService.list(page,size);
         model.addAttribute("pagination",pagination);
+        List<Question> hotQuesions = hotQuestionService.hotQuesion();
+        //System.out.println(hotQuesions);
+        model.addAttribute("hotQuestions",hotQuesions);
         return "index";
     }
 }

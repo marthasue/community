@@ -13,6 +13,6 @@ public interface CommentMapper {
     void insert(Comment comment);
 
     @Select("select * from comment where question_id = #{questionId}")
-    List<Comment> getCommentsByQuestionId(Integer questionId);
+    List<Comment> getCommentsByQuestionId(Long questionId);
     //List<Comment> getCommentsByQuestionId(@Param("questionId") Integer questionId);
 }

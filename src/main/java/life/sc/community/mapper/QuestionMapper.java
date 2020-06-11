@@ -27,5 +27,5 @@ public interface QuestionMapper {
     Integer countByUserId(@Param("userId") Integer userId);
 
     @Select("select * from question where id = #{id}")
-    Question getById(@Param("id") Integer id);
+    Question getById(@Param("id") Long id);
 }

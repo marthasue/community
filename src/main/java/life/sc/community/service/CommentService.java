@@ -17,7 +17,7 @@ public class CommentService {
         //System.out.println("保存回复");
     }
 
-    public List<Comment> listByQuestionId(Integer questionId) {
+    public List<Comment> listByQuestionId(Long questionId) {
         List<Comment> comments = commentMapper.getCommentsByQuestionId(questionId);
         return comments;
     }
