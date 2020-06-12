@@ -9,6 +9,7 @@ import life.sc.community.model.Comment;
 import life.sc.community.model.EntityType;
 import life.sc.community.model.User;
 import life.sc.community.service.CommentService;
+import life.sc.community.service.HotQuestionService;
 import life.sc.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,9 @@ public class CommentController {
 
     @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    private HotQuestionService hotQuestionService;
 
         @ResponseBody
         @RequestMapping(value = "/comment",method = RequestMethod.POST)
@@ -45,6 +49,7 @@ public class CommentController {
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setLikeCount(0L);
         commentService.insert(comment);
+        hotQuestionService.increCommentCount(comment.getParentId());
         int count = commentService.getCommentCount(commentDTO.getParentId(),commentDTO.getType());
         if(commentDTO.getType() == EntityType.ENTITY_QUESTION){
             questionService.updateCommentCount(commentDTO.getParentId(),count);

@@ -44,7 +44,7 @@ public class HotQuestionService {
         //List<Question> lastWeekQuestion = questionMapper.findLastWeekQuestion();
         Set<String> rankSet = getHotQuestionRank();
         //System.out.println(rankSet);
-        List<Question> hotQuestions = new ArrayList<>();
+        List<Question> hotQuestions = new ArrayList<>();//线程安全吗？
         for(String obj:rankSet){
             Long questionId = Long.valueOf(obj);
             Question question = questionMapper.getById(questionId);
