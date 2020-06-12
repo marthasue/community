@@ -50,11 +50,12 @@ function comment(e) {
 function collapseComments(e) {
     var id = e.getAttribute("data-id");
     var comments = $("#comment-" + id);
-
     // 获取一下二级评论的展开状态
     var collapse = e.getAttribute("data-collapse");
+    // console.log(collapse);
     if (collapse) {
         // 折叠二级评论
+        // console.log(1);
         comments.removeClass("in");
         e.removeAttribute("data-collapse");
         e.classList.remove("active");
@@ -68,7 +69,9 @@ function collapseComments(e) {
             e.classList.add("active");
         } else {
             $.getJSON("/comment/" + id, function (data) {
-                $.each(data.data.reverse(), function (index, comment) {
+                // console.log(data);
+                $.each(data.data, function (index, comment) {
+                    console.log(comment);
                     var mediaLeftElement = $("<div/>", {
                         "class": "media-left"
                     }).append($("<img/>", {
@@ -87,7 +90,7 @@ function collapseComments(e) {
                         "class": "menu"
                     }).append($("<span/>", {
                         "class": "pull-right",
-                        "html": moment(comment.gmtCreate).format('YYYY-MM-DD')
+                        // "html": moment(comment.gmtCreate).format('YYYY-MM-DD')
                     })));
 
                     var mediaElement = $("<div/>", {

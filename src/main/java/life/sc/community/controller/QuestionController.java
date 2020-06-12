@@ -1,8 +1,10 @@
 package life.sc.community.controller;
 
+import life.sc.community.dto.CommentDTO;
 import life.sc.community.dto.QuestionDTO;
 import life.sc.community.mapper.QuestionMapper;
 import life.sc.community.model.Comment;
+import life.sc.community.model.EntityType;
 import life.sc.community.service.CommentService;
 import life.sc.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +27,15 @@ public class QuestionController {
     @GetMapping("/question/{id}")
     public String question(@PathVariable(name = "id")  Long id,
                            Model model){
+        questionService.increViewCount(id);
         QuestionDTO questionDTO = questionService.getById(id);
 
-        List<Comment> commentList = commentService.listByQuestionId(id);
-        questionDTO.setCommentCount(commentList.size());
+        //找出此问题评论的所有用户
+        List<CommentDTO> commentDTOList = commentService.listByParentId(id, EntityType.ENTITY_QUESTION);
+        //questionDTO.setCommentCount(commentDTOList.size());
+        questionDTO.setCommentCount(commentService.getCommentCount(id,EntityType.ENTITY_QUESTION));
         model.addAttribute("question",questionDTO);
-        model.addAttribute("comments",commentList);
+        model.addAttribute("comments",commentDTOList);
         return "question";
     }
 }

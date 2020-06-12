@@ -2,10 +2,7 @@ package life.sc.community.mapper;
 
 import life.sc.community.dto.QuestionDTO;
 import life.sc.community.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -28,4 +25,13 @@ public interface QuestionMapper {
 
     @Select("select * from question where id = #{id}")
     Question getById(@Param("id") Long id);
+
+    @Update("update question set view_count = view_count+1 where id = #{id}")
+    void increViewCount(@Param("id") Long id);
+
+    @Update("update question set comment_count = #{count} where id=#{id}")
+    void updateCommentCount(@Param("id")Long parentId,@Param("count") int count);
+
+//    @Update("update question set comment_count = comment_count+1 where id = #{id}")
+//    void increCommentCountById(@Param("id") Long id);
 }

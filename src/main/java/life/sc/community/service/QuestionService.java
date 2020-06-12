@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -42,16 +43,24 @@ public class QuestionService {
         Integer offset = size*(page-1);
         if(offset<0) offset = 0;
         List<Question> questions = questionMapper.list(offset,size);
-        List<QuestionDTO> questionDTOList = new ArrayList<>();
-        //PaginationDTO paginationDTO = new PaginationDTO();
-
-        for (Question question : questions) {
-            User user = userMapper.findById(question.getCreator());
+        List<QuestionDTO> questionDTOList = questions.stream().map(question -> {
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question,questionDTO);
+            User user = userMapper.findById(question.getCreator());
             questionDTO.setUser(user);
-            questionDTOList.add(questionDTO);
-        }
+
+            return questionDTO;
+        }).collect(Collectors.toList());
+//        List<QuestionDTO> questionDTOList = new ArrayList<>();
+//        //PaginationDTO paginationDTO = new PaginationDTO();
+//
+//        for (Question question : questions) {
+//            User user = userMapper.findById(question.getCreator());
+//            QuestionDTO questionDTO = new QuestionDTO();
+//            BeanUtils.copyProperties(question,questionDTO);
+//            questionDTO.setUser(user);
+//            questionDTOList.add(questionDTO);
+//        }
         paginationDTO.setQuestions(questionDTOList);
         return paginationDTO;
     }
@@ -105,5 +114,17 @@ public class QuestionService {
         User user = userMapper.findById(question.getCreator());
         questionDTO.setUser(user);
         return questionDTO;
+    }
+
+    public void increViewCount(Long id) {
+        questionMapper.increViewCount(id);
+    }
+
+//    public void increCommentCount(Long id){
+//        questionMapper.increCommentCountById(id);
+//    }
+
+    public void updateCommentCount(Long parentId, int count) {
+        questionMapper.updateCommentCount(parentId,count);
     }
 }
