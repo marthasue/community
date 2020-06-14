@@ -27,4 +27,8 @@ public class UserService {
            userMapper.update(dbUser);
        }
     }
+
+    public User findById(Integer id){
+        return userMapper.findById(id);
+    }
 }

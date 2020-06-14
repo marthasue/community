@@ -4,6 +4,30 @@ function post() {
     comment2target(questionId, 1, content);
 }
 
+// /点赞评论
+function likeComment(e) {
+    var id = e.getAttribute("data-commentid");
+    var url = "/likeComment";
+    var args = {"id": id};
+    //console.log(e);
+    $.get(url, args, function (data) {
+        console.log(data);
+        if (data.code == 200) {
+            // window.location.reload();
+            $("#likecount" + id).text(data.data);
+            $("#commentlike_btn" + id).css({
+                color: '#f40',
+            })
+        } else {
+            // layer.msg(data.message, {time: 1800, icon: 5, shift: 6}, function () {
+            // });
+            console.log(data.message);
+            //alert(response.message);
+        }
+    })
+    return false;
+}
+
 function comment2target(targetId, type, content) {
     if (!content) {
         alert("不能回复空内容~~~");

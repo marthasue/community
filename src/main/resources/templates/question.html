@@ -51,7 +51,13 @@
                         </h5>
                         <div th:text="${comment.content}"></div>
                         <div class="menu">
-                            <span class="glyphicon glyphicon-thumbs-up icon"></span>
+                            <!--点赞-->
+                            <span th:id="'commentlike_btn'+${comment.commentId}" th:data-commentId="${comment.commentId}" onclick="likeComment(this)"
+                                  style="margin-top: 20px;font-size: 15px;cursor: pointer;"
+                                  class="glyphicon glyphicon-thumbs-up icon"></span>
+                            <strong style="font-size: 11px;" th:id="'likecount'+${comment.commentId}">[[${comment.likeCount}]]</strong></span>&nbsp;
+<!--                            <span th:data="0" onclick="dianzan(this)" class="">-->
+<!--                                <span class="glyphicon glyphicon-thumbs-up icon"></span>-->
                             <span th:data-id="${comment.commentId}"
                                   onclick="collapseComments(this)" class="comment-icon">
                                     <span class="glyphicon glyphicon-comment"></span>

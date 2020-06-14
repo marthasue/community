@@ -25,6 +25,10 @@ public class CommentService {
     @Autowired
     private QuestionMapper questionMapper;
 
+    public  void updateLikeCount(Long id,Long likeCount){
+        commentMapper.updateLikeCount(id,likeCount);
+    }
+
     public void insert(Comment comment) {
         commentMapper.insert(comment);
         //questionMapper.increCommentCountById();
