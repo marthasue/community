@@ -53,4 +53,7 @@ public class CommentService {
         return commentMapper.getCommentCount(id,type);
     }
 
+    public Comment findCommentById(Long commentId) {
+        return commentMapper.findCommentById(commentId);
+    }
 }

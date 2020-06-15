@@ -2,6 +2,7 @@ package life.sc.community.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -26,8 +27,8 @@ public class JedisAdapter {
        // 设置最大10个连接
        jedisPoolConfig.setMaxTotal(10);
 
-       pool = new JedisPool(jedisPoolConfig, "localhost",6379,1000,"123456");
-       //pool = new JedisPool("redis://localhost:6379/10");
+       pool = new JedisPool(jedisPoolConfig, "127.0.0.1",6379,1000,"123456");
+
    }
 
 

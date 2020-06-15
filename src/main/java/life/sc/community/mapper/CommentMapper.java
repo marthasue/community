@@ -22,4 +22,7 @@ public interface CommentMapper {
 
     @Update("update comment set like_count =#{likeCount} where comment_id =#{commentId}")
     void updateLikeCount(@Param("commentId") Long id,@Param("likeCount") Long likeCount);
+
+    @Select("select * from comment where comment_id =#{commentId}")
+    Comment findCommentById(@Param("commentId") Long commentId);
 }

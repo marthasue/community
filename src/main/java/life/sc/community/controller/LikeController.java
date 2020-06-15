@@ -43,8 +43,7 @@ public class LikeController {
     //对某个评论的点赞功能
     @RequestMapping(path = {"/likeComment"},method = {RequestMethod.GET})
     @ResponseBody
-    public Object like(@RequestParam("id") Long commentId, HttpServletRequest request,
-                       Model model){
+    public Object like(@RequestParam("id") Long commentId, HttpServletRequest request){
 //        if(hostHolder.getUser() == null){
 ////            return WendaUtil.getJSONString(999);//用户未登录
 ////        }
@@ -53,13 +52,19 @@ public class LikeController {
             return new ResultDTO().errorOf(CustomizeErrorCode.NO_LOGIN);
         }
 
+        EventModel eventModel = new EventModel(EventType.LIKE);
+        Comment comment = commentService.findCommentById(commentId);
+        eventModel.setActorId(user.getId());
+        eventModel.setEntityId(commentId);
+        eventModel.setEntityOwnerId(comment.getUserId());
+        eventModel.setEntityType(EntityType.ENTITY_COMMENT);
+        //eventModel.setExts("questionId",String.valueOf(comment.getParentId()));
         //实现异步化
         //当LikeController这个请求结束之后,但是EventConsumer启动之后,会执行InitlizingBean方法
         //会另外开启一个线程去执行这个事件
-        eventProducer.fireEvent(new EventModel(EventType.LIKE));
-
+        eventProducer.fireEvent(eventModel);
+        //点赞的实体对象类型是COMMENT
         long likeCount = likeService.like(user.getId(),EntityType.ENTITY_COMMENT,commentId);
-        System.out.println(likeCount);
         commentService.updateLikeCount(commentId,likeCount);
         return ResultDTO.okOf(String.valueOf(likeCount));
     }

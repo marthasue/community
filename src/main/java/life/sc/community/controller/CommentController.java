@@ -1,6 +1,9 @@
 package life.sc.community.controller;
 
 import io.micrometer.core.instrument.util.StringUtils;
+import life.sc.community.async.EventModel;
+import life.sc.community.async.EventProducer;
+import life.sc.community.async.EventType;
 import life.sc.community.dto.CommentDTO;
 import life.sc.community.dto.QuestionDTO;
 import life.sc.community.dto.ResultDTO;
@@ -30,6 +33,9 @@ public class CommentController {
     @Autowired
     private HotQuestionService hotQuestionService;
 
+    @Autowired
+    private EventProducer eventProducer;
+
         @ResponseBody
         @RequestMapping(value = "/comment",method = RequestMethod.POST)
         public Object post(@RequestBody CommentDTO commentDTO,
@@ -56,8 +62,22 @@ public class CommentController {
             questionService.updateCommentCount(commentDTO.getParentId(),count);
         }
 
+        //
+        EventModel eventModel = new EventModel(EventType.COMMENT);
+        //Comment comment = commentService.findCommentById(commentId);
+        eventModel.setActorId(user.getId());
+        eventModel.setEntityId(commentDTO.getParentId());
+        eventModel.setEntityOwnerId(comment.getUserId());
+        eventModel.setEntityType(EntityType.ENTITY_COMMENT);
+        //eventModel.setExts("questionId",String.valueOf(comment.getParentId()));
+        //实现异步化
+        //当LikeController这个请求结束之后,但是EventConsumer启动之后,会执行InitlizingBean方法
+        //会另外开启一个线程去执行这个事件
+        eventProducer.fireEvent(eventModel);
+
         return ResultDTO.okOf();
     }
+
 
     @ResponseBody
     @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET)

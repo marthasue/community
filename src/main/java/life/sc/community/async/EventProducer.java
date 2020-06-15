@@ -1,9 +1,11 @@
 package life.sc.community.async;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import life.sc.community.util.JedisAdapter;
 import life.sc.community.util.RedisKeyUtil;
+import life.sc.community.util.SerializeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +25,14 @@ public class EventProducer {
     public boolean fireEvent(EventModel eventModel){
         try{
             //先将EventModel事件模型转化成JSON
-            String json = JSONObject.toJSONString(eventModel);
-            String key = RedisKeyUtil.getEventQueueKey();
+            String json = JSON.toJSONString(eventModel);
+            //String json = JSONObject.toJSONString(eventModel);
+            //String key = RedisKeyUtil.getEventQueueKey();
+            String key = "eventqueue";
+            System.out.println("key = " + key);
+            System.out.println("json = " + json);
             jedisAdapter.lpush(key,json);//将事件序列化之后存储到redis中
+            jedisAdapter.lpush("name","1");
             return true;
         }catch (Exception e){
             return false;

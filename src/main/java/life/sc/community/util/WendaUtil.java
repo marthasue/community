@@ -13,7 +13,7 @@ public class WendaUtil {
     //匿名用户
     //如果不登录提问就是匿名用户,id默认为3
     public  static int ANONYMOUS_USERID = 3;
-    public static int SYSTEM_USERID = 4;//系统通知的ID
+    public static int SYSTEM_USERID = 0;//系统通知的ID
 
 
     public static String getJSONString(int code, String msg){

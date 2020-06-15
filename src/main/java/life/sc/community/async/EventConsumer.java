@@ -3,6 +3,7 @@ package life.sc.community.async;
 import com.alibaba.fastjson.JSON;
 import life.sc.community.util.JedisAdapter;
 import life.sc.community.util.RedisKeyUtil;
+import life.sc.community.util.SerializeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -69,12 +70,12 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
             public void run() {
 
                 while(true){
-                    String key = RedisKeyUtil.getEventQueueKey();
+                    //String key = RedisKeyUtil.getEventQueueKey();
+                    String key = "eventqueue";
                     //从list对象中取出并移除最后一个元素
                     //将timeout设置为0,表示如果获取不到元素,线程就一直阻塞在这个地方
                     //将timeout设置为一个整数,超出这个时间获取不到元素就会自动返回
                     List<String> events = jedisAdapter.brpop(0,key);
-                    System.out.println(events.size());
                     for(String message : events){
                         //第一次返回键值会返回相应的key值
                         if(message.equals(key)){
@@ -82,7 +83,9 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
                         }
 
                         //将EventModel对象反序列化
-                       EventModel eventModel = JSON.parseObject(message,EventModel.class);
+                        System.out.println("message = " + message);
+                       EventModel eventModel = (EventModel) JSON.parseObject(message,EventModel.class);
+                        System.out.println("eventModel.getEntityOwnerId() = " + eventModel.getEntityOwnerId());
                        if(!config.containsKey(eventModel.getType())){
                            logger.error("不能识别的事件");
                             continue;

@@ -34,7 +34,6 @@ public class LikeService {
     //点赞
     public long like(int userId,int entityType,Long entityId){
         String likeKey = RedisKeyUtil.getLikeKey(entityType, entityId);
-        System.out.println(likeKey);
         jedisAdapter.sadd(likeKey, String.valueOf(userId));//点赞
 
         //从踩里面删掉

@@ -3,7 +3,6 @@ package life.sc.community.async.handler;
 import life.sc.community.async.EventHandler;
 import life.sc.community.async.EventModel;
 import life.sc.community.async.EventType;
-import life.sc.community.model.EntityType;
 import life.sc.community.model.Message;
 import life.sc.community.model.User;
 import life.sc.community.service.MessageService;
@@ -12,16 +11,14 @@ import life.sc.community.util.WendaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
  * 当收到点赞的时候,向对方发出一个私信
  */
 @Component
-public class LikeHandler implements EventHandler {
+public class CommentHandler implements EventHandler {
 
     @Autowired
     MessageService messageService;
@@ -38,13 +35,13 @@ public class LikeHandler implements EventHandler {
         message.setToId(model.getEntityOwnerId());//向谁发送
         message.setGmtCreate(System.currentTimeMillis());
         User user = userService.findById(model.getActorId());//获取触发点赞事件的用户
-        message.setContent("用户" + user.getName() +"赞了你的评论");
+        message.setContent("用户"+user.getName()+"回复了你");
         System.out.println("message = " + message);
         messageService.addMessage(message);
     }
 
     @Override
     public List<EventType> getSupportEventTypes() {
-        return Arrays.asList(EventType.LIKE);//只关注LIKE的事件(只关心点赞的事件)
+        return Arrays.asList(EventType.COMMENT);//只关注LIKE的事件(只关心点赞的事件)
     }
 }
